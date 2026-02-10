@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Login & Sign Up</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a2e;
+            overflow: hidden;
+            flex-direction: column; /* Changed for vertical layout with title */
+        }
+
+        /* Animated Title "ABNI" */
+        .page-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 5rem;
+            color: #fff;
+            margin-bottom: 30px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            animation: dropDown 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            opacity: 0;
+            transform: translateY(-100px);
+            z-index: 20;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        @keyframes dropDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-150px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animated Background */
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            background: linear-gradient(45deg, #16213e, #0f3460, #53354a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Shapes */
+        .shape {
+            position: absolute;
+            filter: blur(50px);
+            opacity: 0.6;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            top: -10%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: #e94560;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            bottom: -10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: #0f3460;
+            border-radius: 50%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            top: 20%;
+            right: 20%;
+            width: 200px;
+            height: 200px;
+            background: #53354a;
+            border-radius: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -50px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        /* Glassmorphism Container */
+        .container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px); /* Increased blur for smoother glass look */
+            border-radius: 20px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2); /* Softer shadow */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; /* Initial state for fade-in */
+            animation: fadeInGlass 1s ease 1s forwards; /* Delayed fade in */
+        }
+        
+        @keyframes fadeInGlass {
+            to { opacity: 1; }
+        }
+
+        .form-box {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            transition: 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy smooth transition */
+            z-index: 10;
+        }
+
+        .login {
+            left: 0;
+            transform: translateX(0);
+        }
+
+        .signup {
+            left: 0;
+            transform: translateX(100%); /* Start hidden to the right */
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .input-box {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 1rem;
+            color: #fff;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus,
+        .input-box input:valid {
+            border-bottom: 2px solid #e94560;
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus ~ label,
+        .input-box input:valid ~ label {
+            top: -20px;
+            font-size: 0.8rem;
+            color: #e94560;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #e94560;
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        button:hover {
+            background: #d63447;
+            transform: scale(1.05); /* Interactive hover */
+            box-shadow: 0 8px 20px rgba(233, 69, 96, 0.6);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .switch-link {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .switch-link a {
+            color: #e94560;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .switch-link a:hover {
+            text-decoration: underline;
+            color: #ff6b81;
+        }
+        
+        /* Updated Toggle Logic for Smooth Bouncy Slide */
+        .container.active .login {
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .container.active .signup {
+            transform: translateX(0%);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Animated Drop-down Title -->
+    <h1 class="page-title">ABNI</h1>
+
+    <div class="container" id="container">
+        <!-- Login Form -->
+        <div class="form-box login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="input-box">
+                    <input type="text" required>
+                    <label>Username</label>
+                </div>
+                <div class="input-box">
+                    <input type="password" required>
+                    <label>Password</label>
+                </div>
+                <button type="submit">Sign In</button>
+                <div class="switch-link">
+                    <p>Don't have an account? <a href="#" id="register-btn">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div class="form-box signup">
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="input-box">
+                    <input type="text" required>
+                    <label>Username</label>
+                </div>
+                <div class="input-box">
+                    <input type="email" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <input type="password" required>
+                    <label>Password</label>
+                </div>
+                <button type="submit">Sign Up</button>
+                <div class="switch-link">
+                    <p>Already have an account? <a href="#" id="login-btn">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const registerBtn = document.getElementById('register-btn');
+        const loginBtn = document.getElementById('login-btn');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+
+        registerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.add('active');
+        });
+
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.remove('active');
+        });
+
+        // Redirection Logic
+        function redirectToMain(e) {
+            e.preventDefault();
+            // Add a subtle exit animation before redirecting (optional but smooth)
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                window.location.href = 'ABNIT3.HTML';
+            }, 500); 
+        }
+
+        loginForm.addEventListener('submit', redirectToMain);
+        signupForm.addEventListener('submit', redirectToMain);
+    </script>
+</body>
+</html>
