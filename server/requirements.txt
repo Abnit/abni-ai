@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+requests
+python-multipart
+# For audio handling (optional but good for future)
+pydub
